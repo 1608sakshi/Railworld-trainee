@@ -1,0 +1,92 @@
+CREATE TABLE SCHOOL(
+SCHOOL_ID INT PRIMARY KEY,
+SCHOOL_NAME VARCHAR(100
+),ADDRESS VARCHAR(100) NOT NULL);
+
+CREATE TABLE STUDENT3(
+    -> STUDENT_ID INT PRIMARY KEY,
+    -> FIRST_NAME VARCHAR(20) NOT NULL,
+    -> LAST_NAME VARCHAR(20) NOT NULL,
+    -> BIRTH_DATE DATE NOT NULL,
+    -> SCHOOL_ID INT,
+    -> FOREIGN KEY(SCHOOL_ID) REFERENCES SCHOOL(SCHOOL_ID));
+
+ CREATE TABLE COURSE(
+    -> COURSE_ID INT PRIMARY KEY,
+    -> COURSE_NAME VARCHAR(20) NOT NULL,
+    -> SCHOOL_ID INT,
+    -> FOREIGN KEY(SCHOOL_ID) REFERENCES SCHOOL(SCHOOL_ID));
+
+
+ INSERT INTO SCHOOL(SCHOOL_ID,SCHOOL_NAME,ADDRESS) VALUES
+    -> ("001","LNCT","BHOPAL"),
+    -> ("002","ST.JOHN","NEW DELHI");
+
+ INSERT INTO student3 (STUDENT_ID,first_name, last_name, birth_date,SC
+HOOL_ID) VALUES
+    -> ("1","ASHUTOSH","SINGH","2000-01-11","001");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> INSERT INTO student3 (STUDENT_ID,first_name, last_name, birth_date,SCHOOL_ID) VALUES
+    -> ("2","SHIVAM","YADAV","2000-02-11","001");
+Query OK, 1 row affected (0.04 sec)
+
+
+INSERT INTO COURSE(COURSE_ID,COURSE_NAME,SCHOOL_ID) VALUES
+    -> ("100","MCA","002");
+Query OK, 1 row affected (0.07 sec)
+
+ INSERT INTO COURSE(COURSE_ID,COURSE_NAME,SCHOOL_ID) VALUES
+    -> ("101","BCA","001");
+Query OK, 1 row affected (0.06 sec)
+
+ SELECT * FROM SCHOOL;
++-----------+-------------+-----------+
+| SCHOOL_ID | SCHOOL_NAME | ADDRESS   |
++-----------+-------------+-----------+
+|         1 | LNCT        | BHOPAL    |
+|         2 | ST.JOHN     | NEW DELHI |
++-----------+-------------+-----------+
+
+
+SELECT * FROM STUDENT3;
++------------+------------+-----------+------------+-----------+
+| STUDENT_ID | FIRST_NAME | LAST_NAME | BIRTH_DATE | SCHOOL_ID |
++------------+------------+-----------+------------+-----------+
+|          1 | ASHUTOSH   | SINGH     | 2000-01-11 |         1 |
+|          2 | SHIVAM     | YADAV     | 2000-02-11 |         1 |
++------------+------------+-----------+------------+-----------+
+
+
+ SELECT * FROM COURSE;
++-----------+-------------+-----------+
+| COURSE_ID | COURSE_NAME | SCHOOL_ID |
++-----------+-------------+-----------+
+|       100 | MCA         |         2 |
+|       101 | BCA         |         1 |
++-----------+-------------+-----------+
+
+ SELECT
+    ->     S.SCHOOL_ID,
+    ->     S.SCHOOL_NAME,
+    ->     S.ADDRESS,
+    ->     ST.STUDENT_ID,
+    ->     ST.FIRST_NAME,
+    ->     ST.LAST_NAME,
+    ->     ST.BIRTH_DATE,
+    ->     C.COURSE_ID,
+    ->     C.COURSE_NAME
+    -> FROM
+    ->     SCHOOL S
+    -> JOIN
+    ->     STUDENT3 ST ON S.SCHOOL_ID = ST.SCHOOL_ID
+    -> JOIN
+    ->     COURSE C ON S.SCHOOL_ID = C.SCHOOL_ID;
++-----------+-------------+---------+------------+------------+-----------+------------+-----------+-------------+
+| SCHOOL_ID | SCHOOL_NAME | ADDRESS | STUDENT_ID | FIRST_NAME | LAST_NAME | BIRTH_DATE | COURSE_ID | COURSE_NAME |
++-----------+-------------+---------+------------+------------+-----------+------------+-----------+-------------+
+|         1 | LNCT        | BHOPAL  |          2 | SHIVAM     | YADAV     | 2000-02-11 |       101 | BCA         |
+|         1 | LNCT        | BHOPAL  |          1 | ASHUTOSH   | SINGH     | 2000-01-11 |       101 | BCA         |
++-----------+-------------+---------+------------+------------+-----------+------------+-----------+-------------+
+2 rows in set (0.06 sec)
+
